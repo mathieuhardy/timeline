@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Timeline</title>
+
+        <link href="thirdparties/fontawesome/css/all.min.css" rel="stylesheet" type="text/css"/>
+        <link href="thirdparties/sweetalert/sweetalert2.min.css" rel="stylesheet" type="text/css"/>
+        <link href="thirdparties/purecss/forms.css" rel="stylesheet" type="text/css" />
+        <link href="thirdparties/vis/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+
+        <link href="css/vis-overrides.css" rel="stylesheet" type="text/css" />
+        <link href="css/timeline.css" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <i id="Action_LockUnlock" class="fa fa-lock-open button"></i>
+            <input type="button" class="button" id="Action_LoadData" value="Load" title="Load data from filesystem" />
+            <input type="button" class="button" id="Action_SaveData" value="Save" title="Save data to filesystem" />
+            <input type="button" class="button" id="Action_EditConfiguration" value="Edit configuration" title="Edit configuration" />
+            <input type="button" class="button" id="Action_EditItemCategories" value="Edit item categories" title="Edit item categories" />
+            <input type="button" class="button" id="Action_EditGroups" value="Edit groups" title="Edit groups" />
+        </div>
+
+        <!-- Timeline container -->
+        <div id="Timeline"></div>
+
+        <!-- Hidden panel used to edit the timeline configuration -->
+        <div id="Panel_Configuration" class="panel from-right hidden">
+            <header>
+                <h1>Timeline configuration</h1>
+                <a id="Panel_Configuration_Button_Close" class="btn-close" href="#"></a>
+            </header>
+
+            <div class="content">
+                <form class="pure-form pure-form-aligned">
+                    <fieldset>
+                        <div class="pure-control-group">
+                            <label for="Conf_StartDate">Start date</label>
+                            <input id="Conf_StartDate" type="datetime-local" value="" />
+                        </div>
+                
+                        <div class="pure-control-group">
+                            <label for="Conf_EndDate">End date</label>
+                            <input id="Conf_EndDate" type="datetime-local" value="" />
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+        <!-- Hidden panel used to edit item categories -->
+        <div id="Panel_ItemCategoriesEdit" class="panel from-right hidden">
+            <header>
+                <h1>Item categories</h1>
+                <a id="Panel_ItemCategoriesEdit_Button_Close" class="btn-close" href="#"></a>
+            </header>
+
+            <div class="content">
+                <div id="Panel_ItemCategoriesEdit_Content_List"></div>
+            </div>
+        </div>
+
+        <!-- Hidden panel used to edit groups -->
+        <div id="Panel_GroupsEdit" class="panel from-right hidden">
+            <header>
+                <h1>Groups</h1>
+                <a id="Panel_GroupsEdit_Button_Close" class="btn-close" href="#"></a>
+            </header>
+
+            <div class="content">
+                <i id="Panel_GroupsEdit_Content_Icon_Add" class="fa fa-plus button"></i>
+                <div id="Panel_GroupsEdit_Content_List"></div>
+            </div>
+        </div>
+    </body>
+
+    <script src="thirdparties/editorjs/editor.js"></script>
+    <script src="thirdparties/editorjs/checklist.js"></script>
+    <script src="thirdparties/editorjs/delimiter.js"></script>
+    <script src="thirdparties/editorjs/header.js"></script>
+    <script src="thirdparties/editorjs/marker.js"></script>
+    <script src="thirdparties/editorjs/nested-list.js"></script>
+    <script src="thirdparties/editorjs/quote.js"></script>
+    <script src="thirdparties/editorjs/simple-image.js"></script>
+    <script src="thirdparties/editorjs/underline.js"></script>
+
+    <script src="thirdparties/moment/moment-with-locales.min.js"></script>
+    <script src="thirdparties/sortablejs/Sortable.min.js"></script>
+    <script src="thirdparties/sweetalert/sweetalert2.all.min.js"></script>
+    <script src="thirdparties/uuid/uuidv4.min.js"></script>
+    <script src="thirdparties/vis/vis-timeline-graph2d.min.js"></script>
+
+    <script src="js/timeline.js"></script>
+</html>

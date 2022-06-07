@@ -1,0 +1,320 @@
+/**
+ * -----------------------------------------------------------------------------
+ * Global
+ * -----------------------------------------------------------------------------
+ */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #272727;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.button {
+    cursor: pointer !important;
+
+    border: 0;
+}
+
+/* Popup add/update item */
+
+.swal2-html-container {
+    text-align: left !important;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+ * Toolbar
+ * -----------------------------------------------------------------------------
+ */
+
+.toolbar {
+    padding: 0.3em;
+    color: #ffffff;
+}
+
+.toolbar input {
+    color: #272727;
+    background-color: #ffffff;
+
+    padding: 5px;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+/* Panels common
+ * -----------------------------------------------------------------------------
+ */
+
+/* Panel */
+.panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 97;
+
+    height: 100%;
+    width: 100%;
+
+    font-size: 0.8em;
+}
+
+.panel *,
+.panel *::after,
+.panel *::before {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.panel.hidden {
+    display: none;
+}
+
+.panel.from-right {
+    right: 0;
+}
+
+/* Header */
+.panel header {
+    position: fixed;
+    z-index: 99;
+
+    width: 50%;
+    height: 50px;
+
+    line-height: 50px;
+
+    background: #ffffff;
+}
+
+.panel header h1 {
+    position: absolute;
+    top: 0;
+
+    color: #89ba2c;
+    padding-left: 4%;
+
+    font-size: 1em;
+}
+
+.panel.from-right header {
+    right: 0;
+}
+
+.panel.from-left header {
+    left: 0;
+}
+
+/* Header > Left side */
+.panel::after {
+    content: '';
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: 0 0;
+
+    cursor: pointer;
+}
+
+.panel:not(.hidden)::after {
+    background: rgba(0,0,0,.6);
+}
+
+/* Header > Right side */
+
+.panel header .btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    height: 100%;
+    width: 60px;
+}
+
+.panel header .btn-close::before,
+.panel header .btn-close::after {
+    content: '';
+
+    position: absolute;
+    top: 22px;
+    left: 20px;
+
+    height: 3px;
+    width: 20px;
+
+    background-color: #272727;
+}
+
+.panel header .btn-close::before {
+    transform:rotate(45deg);
+    -webkit-transform:rotate(45deg);
+}
+
+.panel header .btn-close::after {
+    transform:rotate(-45deg);
+    -webkit-transform:rotate(-45deg);
+}
+
+.panel header .btn-close:hover {
+    background-color:#272727;
+}
+
+.panel header .btn-close:hover::before,
+.panel header .btn-close:hover::after {
+    background-color:#ffffff;
+}
+
+/* Content */
+.panel.from-left .cd-panel__container {
+    left: 0;
+}
+
+.panel.from-right .cd-panel__container {
+    right: 0;
+}
+
+.panel .content {
+    position: fixed;
+    top: 0;
+    z-index: 98;
+
+    width: 50%;
+    height: 100%;
+
+    background: #dbe2e9;
+    color: #272727;
+
+    padding: 70px 2%;
+    overflow: auto;
+}
+
+.panel.from-right .content {
+    right: 0;
+}
+
+.panel.from-left .content {
+    left: 0;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+/* Panel edit groups
+ * -----------------------------------------------------------------------------
+ */
+
+/* Content > Groups list */
+#Panel_GroupsEdit_Content_List {
+    list-style-type: none;
+    counter-reset: item;
+    list-style-position: inside;
+
+    padding: 0 1em 1em 1em;
+
+    color: #ffffff;
+    background-color: #272727;
+}
+
+#Panel_GroupsEdit_Content_List ol {
+    list-style-type: none;
+    list-style-position: inside;
+
+    padding-left: 2em;
+}
+
+#Panel_GroupsEdit_Content_List li {
+    padding-top: 1em;
+}
+
+#Panel_GroupsEdit_Content_List li > span,
+#Panel_GroupsEdit_Content_List li > i {
+    display: inline-block;
+
+    vertical-align: middle;
+
+    cursor: grab;
+}
+
+#Panel_GroupsEdit_Content_List li > i {
+    padding-left: 0.5em;
+}
+
+#Panel_GroupsEdit_Content_List li:before {
+    content: counters(item, ".") ". ";
+    counter-increment: item;
+}
+
+/* Content > Groups list > Icons */
+#Panel_GroupsEdit_Content_List li > .btn-rename-group {
+    color: #8cc6d7;
+}
+
+#Panel_GroupsEdit_Content_List li > .btn-remove-group {
+    color: #b1221c;
+}
+
+#Panel_GroupsEdit_Content_List li > .btn-show-hide-group {
+    color: #b7ca79;
+}
+
+#Panel_GroupsEdit_Content_Icon_Add {
+    color: #ffffff;
+    background-color: #272727;
+
+    padding: 5px;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+/* Panel edit item categories
+ * -----------------------------------------------------------------------------
+ */
+
+/* Content > Categories list */
+#Panel_ItemCategoriesEdit_Content_List {
+    list-style-type: none;
+    counter-reset: item;
+    list-style-position: inside;
+
+    padding: 1em 1em 1em 1em;
+
+    color: #ffffff;
+    background-color: #272727;
+}
+
+#Panel_ItemCategoriesEdit_Content_List table {
+    border-collapse: collapse;
+}
+
+#Panel_ItemCategoriesEdit_Content_List > table > tr,
+#Panel_ItemCategoriesEdit_Content_List > table > tr > th,
+#Panel_ItemCategoriesEdit_Content_List > table > tr > td {
+    border: 1px solid #ffffff;
+}
+
+#Panel_ItemCategoriesEdit_Content_List > table > tr > th,
+#Panel_ItemCategoriesEdit_Content_List > table > tr > td {
+    padding: 0.2em;
+    text-align: center;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+/* Popup add/update item
+ * -----------------------------------------------------------------------------
+ */
+
+.swal2-html-container {
+    text-align: left !important;
+}

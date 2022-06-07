@@ -1,0 +1,75 @@
+/**
+ * -----------------------------------------------------------------------------
+ * Global
+ * -----------------------------------------------------------------------------
+ */
+
+.vis-timeline {
+    background-color: #ffffff !important;
+
+    border: 0px !important;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+ * Groups
+ * -----------------------------------------------------------------------------
+ */
+
+.vis-nested-group.group-characters {
+    color: #ffffff !important;
+    background-color: #272727 !important;
+
+    border-color: #272727 !important;
+
+    font-weight: bold !important;
+}
+
+.vis-nested-group.group-character {
+    color: #272727 !important;
+    background-color: #cccccc !important;
+
+    border-color: #272727 !important;
+}
+
+.vis-label.vis-nesting-group.collapsed::before,
+.vis-label.vis-nesting-group.expanded::before {
+    padding-left: 0.5em !important;
+}
+
+.vis-label.vis-nesting-group,
+.vis-label.vis-nested-group {
+    font-size: 0.85em !important;
+}
+
+.vis-label.vis-nesting-group > .vis-inner {
+    padding-left: 0.5em !important;
+}
+
+.vis-panel.vis-left {
+    border-right: 1px solid #272727 !important;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+ * Time axis top & bottom
+ * -----------------------------------------------------------------------------
+ */
+
+.vis-panel.vis-top > .vis-time-axis,
+.vis-panel.vis-bottom > .vis-time-axis {
+    background-color: #fffbd6 !important;
+    /*opacity: 0.7 !important;*/
+
+    font-weight: bold !important;
+}
+
+.vis-panel > .vis-time-axis * {
+    color: #272727 !important;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+ * Items
+ * -----------------------------------------------------------------------------
+ */

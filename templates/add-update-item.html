@@ -1,0 +1,38 @@
+<form class="pure-form pure-form-stacked">
+    <fieldset>
+        <div class="pure-control-group">
+            <label for="AddUpdateItem_Type">Item type</label>
+            <select id="AddUpdateItem_Type">
+                <option value="box" %BOX_SELECTED%>Box</option>
+                <option value="point" %POINT_SELECTED%>Point</option>
+                <option value="range" %RANGE_SELECTED%>Range</option>
+                <!--<option value="background" %BACKGROUND_SELECTED%>Background</option>-->
+            </select>
+        </div>
+
+        <div class="pure-control-group">
+            <label for="AddUpdateItem_Text">Text</label>
+            <input id="AddUpdateItem_Text" type="text" placeholder="Text" value="%TEXT%" />
+        </div>
+
+        <div class="pure-control-group">
+            <label for="AddUpdateItem_ClassName">Category</label>
+            <input id="AddUpdateItem_ClassName" type="text" placeholder="Category" value="%CLASS_NAME%" />
+        </div>
+
+        <div class="pure-control-group">
+            <label for="AddUpdateItem_StartDate">Start date</label>
+            <input id="AddUpdateItem_StartDate" type="datetime-local" value="%START_DATE%" />
+        </div>
+
+        <div class="pure-control-group">
+            <label for="AddUpdateItem_EndDate">End date</label>
+            <input id="AddUpdateItem_EndDate" type="datetime-local" value="%END_DATE%" />
+        </div>
+
+        <div class="pure-control-group">
+            <label for="AddUpdateItem_Description">Description</label>
+            <div id="AddUpdateItem_Description"></div>
+        </div>
+    </fieldset>
+</form>

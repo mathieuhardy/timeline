@@ -1,0 +1,652 @@
+{
+  "configuration": {
+    "locale": "fr_FR"
+  },
+  "groups": [
+    {
+      "id": "ed1f2d48-2bee-4f42-a70f-39d5db011093",
+      "name": "Principaux",
+      "category": "group-characters",
+      "position": 1,
+      "visible": true,
+      "childs": [
+        {
+          "id": "142ed279-a566-4bd0-a599-511a2bd121ee",
+          "name": "Johan",
+          "category": "group-character",
+          "position": 1,
+          "visible": true,
+          "childs": []
+        },
+        {
+          "id": "fe3a4d0c-d18e-42c1-9183-4888f7e6aa2f",
+          "name": "Khouloud",
+          "category": "group-character",
+          "position": 2,
+          "visible": true,
+          "childs": []
+        }
+      ]
+    },
+    {
+      "id": "53048c2f-b78c-4fa2-895f-4115dc58bf62",
+      "name": "Secondaires",
+      "category": "group-characters",
+      "position": 2,
+      "visible": true,
+      "childs": [
+        {
+          "id": "e7268082-daa0-4e9f-b8de-2f63cf8f8fd8",
+          "name": "Isabelle",
+          "category": "group-character",
+          "position": 1,
+          "visible": true,
+          "childs": []
+        },
+        {
+          "id": "316ad8b9-a589-4db9-9a07-acd2c1cfba19",
+          "name": "Etienne",
+          "category": "group-character",
+          "position": 2,
+          "visible": true,
+          "childs": []
+        },
+        {
+          "id": "d4b1a7d3-5edd-429c-a6e2-84429f72fafc",
+          "name": "Noam",
+          "category": "group-character",
+          "position": 3,
+          "visible": true,
+          "childs": []
+        },
+        {
+          "id": "140b4da3-b544-46af-9412-f3fdf334f836",
+          "name": "Bertrand",
+          "category": "group-character",
+          "position": 4,
+          "visible": true,
+          "childs": []
+        },
+        {
+          "id": "5ea3f6f9-0448-4636-9d94-2839f8c7a0f1",
+          "name": "Rémi",
+          "category": "group-character",
+          "position": 5,
+          "visible": true,
+          "childs": []
+        }
+      ]
+    },
+    {
+      "id": "ace74d74-41b5-4dfe-a071-a81f71e30618",
+      "name": "Autres",
+      "category": "group-characters",
+      "position": 3,
+      "visible": true,
+      "childs": [
+        {
+          "id": "9fa64fe7-a983-4ee7-870d-c712e922d79f",
+          "name": "Alexis",
+          "category": "group-character",
+          "position": 1,
+          "visible": true,
+          "childs": []
+        },
+        {
+          "id": "796819fe-67a0-4b5f-a353-862994349b6c",
+          "name": "Jon",
+          "category": "group-character",
+          "position": 2,
+          "visible": true,
+          "childs": []
+        }
+      ]
+    }
+  ],
+  "item_categories": {
+      "toto": {
+          "fg": "#ffffff",
+          "bg": "#0000ff",
+          "border": "#ff0000"
+      },
+      "tata": {
+          "fg": "#ffffff",
+          "bg": "#000000",
+          "border": "#fff000"
+      }
+  },
+  "items": [
+    {
+      "id": 0,
+      "group": "9fa64fe7-a983-4ee7-870d-c712e922d79f",
+      "content": "item 0 6fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-26T22:00:00.000Z",
+      "end": "2021-06-27T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 1,
+      "group": "316ad8b9-a589-4db9-9a07-acd2c1cfba19",
+      "content": "item 1 18fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-08T22:00:00.000Z",
+      "end": "2021-07-09T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 2,
+      "group": "796819fe-67a0-4b5f-a353-862994349b6c",
+      "content": "item 2 3fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-23T22:00:00.000Z",
+      "end": "2021-06-24T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 3,
+      "group": "d4b1a7d3-5edd-429c-a6e2-84429f72fafc",
+      "content": "item 3 6fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-26T22:00:00.000Z",
+      "end": "2021-06-27T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 4,
+      "group": "d4b1a7d3-5edd-429c-a6e2-84429f72fafc",
+      "content": "item 4 26fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-16T22:00:00.000Z",
+      "end": "2021-07-17T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 5,
+      "group": "5ea3f6f9-0448-4636-9d94-2839f8c7a0f1",
+      "content": "item 5 25fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-15T22:00:00.000Z",
+      "end": "2021-07-16T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 6,
+      "group": "140b4da3-b544-46af-9412-f3fdf334f836",
+      "content": "item 6 15fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-05T22:00:00.000Z",
+      "end": "2021-07-06T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 7,
+      "group": "5ea3f6f9-0448-4636-9d94-2839f8c7a0f1",
+      "content": "item 7 21fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-11T22:00:00.000Z",
+      "end": "2021-07-12T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 8,
+      "group": "e7268082-daa0-4e9f-b8de-2f63cf8f8fd8",
+      "content": "item 8 8fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-28T22:00:00.000Z",
+      "end": "2021-06-29T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 9,
+      "group": "142ed279-a566-4bd0-a599-511a2bd121ee",
+      "content": "item 9 19fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-09T22:00:00.000Z",
+      "end": "2021-07-10T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 10,
+      "content": "item 10 13fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-03T22:00:00.000Z",
+      "end": "2021-07-04T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 11,
+      "group": "796819fe-67a0-4b5f-a353-862994349b6c",
+      "content": "item 11 8fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-28T22:00:00.000Z",
+      "end": "2021-06-29T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 12,
+      "group": "316ad8b9-a589-4db9-9a07-acd2c1cfba19",
+      "content": "item 12 19fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-09T22:00:00.000Z",
+      "end": "2021-07-10T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 13,
+      "group": "9fa64fe7-a983-4ee7-870d-c712e922d79f",
+      "content": "item 13 26fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-16T22:00:00.000Z",
+      "end": "2021-07-17T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 14,
+      "group": "d4b1a7d3-5edd-429c-a6e2-84429f72fafc",
+      "content": "item 14 1fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-21T22:00:00.000Z",
+      "end": "2021-06-22T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 15,
+      "group": 3000,
+      "content": "item 15 8fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-28T22:00:00.000Z",
+      "end": "2021-06-29T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 16,
+      "group": "9fa64fe7-a983-4ee7-870d-c712e922d79f",
+      "content": "item 16 8fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-28T22:00:00.000Z",
+      "end": "2021-06-29T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 17,
+      "group": "316ad8b9-a589-4db9-9a07-acd2c1cfba19",
+      "content": "item 17 4fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-24T22:00:00.000Z",
+      "end": "2021-06-25T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 18,
+      "group": "5ea3f6f9-0448-4636-9d94-2839f8c7a0f1",
+      "content": "item 18 13fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-03T22:00:00.000Z",
+      "end": "2021-07-04T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 19,
+      "group": "e7268082-daa0-4e9f-b8de-2f63cf8f8fd8",
+      "content": "item 19 16fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-06T22:00:00.000Z",
+      "end": "2021-07-07T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 20,
+      "group": "9fa64fe7-a983-4ee7-870d-c712e922d79f",
+      "content": "item 20 16fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-06T22:00:00.000Z",
+      "end": "2021-07-07T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 21,
+      "group": "5ea3f6f9-0448-4636-9d94-2839f8c7a0f1",
+      "content": "item 21 2fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-22T22:00:00.000Z",
+      "end": "2021-06-23T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 22,
+      "content": "item 22 4fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-24T22:00:00.000Z",
+      "end": "2021-06-25T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 23,
+      "group": "316ad8b9-a589-4db9-9a07-acd2c1cfba19",
+      "content": "item 23 10fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-30T22:00:00.000Z",
+      "end": "2021-07-01T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 24,
+      "group": "e7268082-daa0-4e9f-b8de-2f63cf8f8fd8",
+      "content": "item 24 14fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-04T22:00:00.000Z",
+      "end": "2021-07-05T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 25,
+      "group": "796819fe-67a0-4b5f-a353-862994349b6c",
+      "content": "item 25 5fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-25T22:00:00.000Z",
+      "end": "2021-06-26T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 26,
+      "group": "140b4da3-b544-46af-9412-f3fdf334f836",
+      "content": "item 26 19fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-09T22:00:00.000Z",
+      "end": "2021-07-10T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 27,
+      "group": "5ea3f6f9-0448-4636-9d94-2839f8c7a0f1",
+      "content": "item 27 22fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-12T22:00:00.000Z",
+      "end": "2021-07-13T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 28,
+      "group": "ed1f2d48-2bee-4f42-a70f-39d5db011093",
+      "content": "item 28 12fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-02T22:00:00.000Z",
+      "end": "2021-07-03T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 29,
+      "content": "item 29 8fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-28T22:00:00.000Z",
+      "end": "2021-06-29T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 30,
+      "group": "5ea3f6f9-0448-4636-9d94-2839f8c7a0f1",
+      "content": "item 30 9fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-29T22:00:00.000Z",
+      "end": "2021-06-30T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 31,
+      "group": "142ed279-a566-4bd0-a599-511a2bd121ee",
+      "content": "item 31 10fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-30T22:00:00.000Z",
+      "end": "2021-07-01T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 32,
+      "group": "ed1f2d48-2bee-4f42-a70f-39d5db011093",
+      "content": "item 32 3fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-23T22:00:00.000Z",
+      "end": "2021-06-24T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 33,
+      "group": "9fa64fe7-a983-4ee7-870d-c712e922d79f",
+      "content": "item 33 16fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-06T22:00:00.000Z",
+      "end": "2021-07-07T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 34,
+      "group": 3000,
+      "content": "item 34 18fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-08T22:00:00.000Z",
+      "end": "2021-07-09T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 35,
+      "group": "316ad8b9-a589-4db9-9a07-acd2c1cfba19",
+      "content": "item 35 1fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-21T22:00:00.000Z",
+      "end": "2021-06-22T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 36,
+      "group": "9fa64fe7-a983-4ee7-870d-c712e922d79f",
+      "content": "item 36 8fvnzjivfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-28T22:00:00.000Z",
+      "end": "2021-06-29T22:00:00.000Z",
+      "type": "box",
+      "description": {
+        "time": 1654179722237,
+        "blocks": [
+          {
+            "id": "oUq2g_tl8y",
+            "type": "header",
+            "data": {
+              "text": "Editor.js",
+              "level": 2
+            }
+          },
+          {
+            "id": "zbGZFPM-iI",
+            "type": "paragraph",
+            "data": {
+              "text": "Hey. Meet the new Editor. On this page you can see it in action — try to edit this text. Source code of the page contains the example of connection and configuration."
+            }
+          },
+          {
+            "id": "qYIGsjS5rt",
+            "type": "header",
+            "data": {
+              "text": "Key features",
+              "level": 3
+            }
+          },
+          {
+            "id": "XV87kJS_H1",
+            "type": "list",
+            "data": {
+              "style": "unordered",
+              "items": [
+                "It is a block-styled editor",
+                "It returns clean data output in JSON",
+                "Designed to be extendable and pluggable with a simple API"
+              ]
+            }
+          },
+          {
+            "id": "AOulAjL8XM",
+            "type": "header",
+            "data": {
+              "text": "What does it mean «block-styled editor»",
+              "level": 3
+            }
+          },
+          {
+            "id": "cyZjplMOZ0",
+            "type": "paragraph",
+            "data": {
+              "text": "Workspace in classic editors is made of a single contenteditable element, used to create different HTML markups. Editor.js workspace consists of separate Blocks: paragraphs, headings, images, lists, quotes, etc. Each of them is an independent contenteditable element (or more complex structure) provided by Plugin and united by Editor's Core."
+            }
+          }
+        ],
+        "version": "2.24.3"
+      },
+      "className": "toto"
+    },
+    {
+      "id": 37,
+      "group": "140b4da3-b544-46af-9412-f3fdf334f836",
+      "content": "item 37 11fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-01T22:00:00.000Z",
+      "end": "2021-07-02T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 38,
+      "content": "item 38 23fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-13T22:00:00.000Z",
+      "end": "2021-07-14T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 39,
+      "group": "142ed279-a566-4bd0-a599-511a2bd121ee",
+      "content": "item 39 12fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-02T22:00:00.000Z",
+      "end": "2021-07-03T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 40,
+      "group": "5ea3f6f9-0448-4636-9d94-2839f8c7a0f1",
+      "content": "item 40 21fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-11T22:00:00.000Z",
+      "end": "2021-07-12T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 41,
+      "group": "142ed279-a566-4bd0-a599-511a2bd121ee",
+      "content": "item 41 23fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-13T22:00:00.000Z",
+      "end": "2021-07-14T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 42,
+      "group": 2000,
+      "content": "item 42 16fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-06T22:00:00.000Z",
+      "end": "2021-07-07T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 43,
+      "group": "316ad8b9-a589-4db9-9a07-acd2c1cfba19",
+      "content": "item 43 15fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-05T22:00:00.000Z",
+      "end": "2021-07-06T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 44,
+      "group": "ed1f2d48-2bee-4f42-a70f-39d5db011093",
+      "content": "item 44 8fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-28T22:00:00.000Z",
+      "end": "2021-06-29T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 45,
+      "group": "316ad8b9-a589-4db9-9a07-acd2c1cfba19",
+      "content": "item 45 25fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-15T22:00:00.000Z",
+      "end": "2021-07-16T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 46,
+      "group": "140b4da3-b544-46af-9412-f3fdf334f836",
+      "content": "item 46 10fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-30T22:00:00.000Z",
+      "end": "2021-07-01T22:00:00.000Z",
+      "type": "range"
+    },
+    {
+      "id": 47,
+      "group": "796819fe-67a0-4b5f-a353-862994349b6c",
+      "content": "item 47 4fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-24T22:00:00.000Z",
+      "end": "2021-06-25T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 48,
+      "group": "d4b1a7d3-5edd-429c-a6e2-84429f72fafc",
+      "content": "item 48 6fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-26T22:00:00.000Z",
+      "end": "2021-06-27T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 49,
+      "group": 2000,
+      "content": "item 49 4fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-24T22:00:00.000Z",
+      "end": "2021-06-25T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 50,
+      "group": "316ad8b9-a589-4db9-9a07-acd2c1cfba19",
+      "content": "item 50 9fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-29T22:00:00.000Z",
+      "end": "2021-06-30T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 51,
+      "group": "d4b1a7d3-5edd-429c-a6e2-84429f72fafc",
+      "content": "item 51 23fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-13T22:00:00.000Z",
+      "end": "2021-07-14T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 52,
+      "group": "ed1f2d48-2bee-4f42-a70f-39d5db011093",
+      "content": "item 52 3fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-23T22:00:00.000Z",
+      "end": "2021-06-24T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 53,
+      "group": 3000,
+      "content": "item 53 30fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-20T22:00:00.000Z",
+      "end": "2021-07-21T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 54,
+      "group": "9fa64fe7-a983-4ee7-870d-c712e922d79f",
+      "content": "item 54 30fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-20T22:00:00.000Z",
+      "end": "2021-07-21T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 55,
+      "group": "140b4da3-b544-46af-9412-f3fdf334f836",
+      "content": "item 55 2fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-22T22:00:00.000Z",
+      "end": "2021-06-23T22:00:00.000Z",
+      "type": "point"
+    },
+    {
+      "id": 56,
+      "group": "140b4da3-b544-46af-9412-f3fdf334f836",
+      "content": "item 56 23fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-13T22:00:00.000Z",
+      "end": "2021-07-14T22:00:00.000Z",
+      "type": "box"
+    },
+    {
+      "id": 57,
+      "content": "item 57 14fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-07-04T22:00:00.000Z",
+      "end": "2021-07-05T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 58,
+      "group": "316ad8b9-a589-4db9-9a07-acd2c1cfba19",
+      "content": "item 58 2fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-22T22:00:00.000Z",
+      "end": "2021-06-23T22:00:00.000Z",
+      "type": "background"
+    },
+    {
+      "id": 59,
+      "group": "796819fe-67a0-4b5f-a353-862994349b6c",
+      "content": "item 59 3fvnzjiv\nfbizefckcbpazbaz bzaxb",
+      "start": "2021-06-23T22:00:00.000Z",
+      "end": "2021-06-24T22:00:00.000Z",
+      "type": "box"
+    }
+  ]
+}
