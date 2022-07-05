@@ -56,6 +56,10 @@ class Json extends EventTarget {
             return false;
         }
 
+        if(!this.#data.markers) {
+            return false;
+        }
+
         return true;
     }
 
@@ -87,6 +91,10 @@ class Json extends EventTarget {
 
         if(!this.#data.item_categories) {
             this.#data.item_categories = {};
+        }
+
+        if(!this.#data.markers) {
+            this.#data.markers = {};
         }
 
         // Notify
@@ -376,6 +384,72 @@ class Json extends EventTarget {
         return false;
     }
 
+    /**
+     * Add a marker to the list.
+     *
+     * @param {String} uuid Unique id of the marker.
+     * @param {String} name Name of the marker.
+     * @param {Date}   date Date of the marker.
+     *
+     * @return {Bool}       True if the marker has been added, false otherwise.
+     */
+    addMarker(uuid, name, date) {
+        if(uuid in this.data.markers) {
+            return false;
+        }
+
+        this.data.markers[uuid] = {
+            name: name,
+            date: date,
+        };
+
+        return true;
+    }
+
+    /**
+     * Remove a marker from the list.
+     *
+     * @param {String} uuid Unique id of the marker.
+     *
+     * @return {Bool}       True if the marker has been removed, false
+     *                      otherwise.
+     */
+    removeMarker(uuid) {
+        if(!(uuid in this.data.markers)) {
+            return false;
+        }
+
+        delete this.data.markers[uuid];
+
+        return true;
+    }
+
+    /**
+     * Update a marker from the list.
+     *
+     * @param {String} uuid Unique id of the marker.
+     * @param {String} name Name of the marker.
+     * @param {Date}   date Date of the marker.
+     *
+     * @return {Bool}       True if the marker has been updated, false
+     *                      otherwise.
+     */
+    updateMarker(uuid, name, date) {
+        if(!(uuid in this.data.markers)) {
+            return false;
+        }
+
+        if(name) {
+            this.data.markers[uuid].name = name;
+        }
+
+        if(date) {
+            this.data.markers[uuid].date = date;
+        }
+
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // Getters/setters
     // -------------------------------------------------------------------------
@@ -455,7 +529,21 @@ class Timeline extends EventTarget {
             this.#groups,
             this.#options);
 
+        this.#timeline.on(VIS.EVENT.DOUBLE_CLICK, (properties) => {
+            this.#onDoubleClicked(properties);
+        });
+
+        this.#timeline.on(VIS.EVENT.MARKER_CHANGED, (properties) => {
+            this.#onMarkerTitleChange(properties);
+        });
+
+        this.#timeline.on(VIS.EVENT.TIME_CHANGED, (properties) => {
+            this.#onMarkerDateChange(properties);
+        });
+
         this.refresh();
+
+        this.#addMarkers();
 
         this.#updateRange();
     }
@@ -511,13 +599,17 @@ class Timeline extends EventTarget {
     toggleLockStatus() {
         this.#readOnly = !this.#readOnly;
 
-        if(this.#timeline) {
-            this.#timeline.setOptions({
-                editable: this.#readOnly ? false : true,
-            });
-
-            this.refresh();
+        if(!this.#timeline) {
+            return;
         }
+
+        this.#timeline.setOptions({
+            editable: this.#readOnly ? false : true,
+        });
+
+        this.#updateMarkersLockStatus();
+
+        this.refresh();
     }
 
     isLocked() {
@@ -567,6 +659,10 @@ class Timeline extends EventTarget {
             zoomKey: 'ctrlKey',
 
             // Callbacks
+            onInitialDrawComplete: async () => {
+                this.#updateMarkersLockStatus();
+            },
+
             onAdd: async (item, callback) => {
                 const itemAdded =
                     await showAddUpdateItemPopup('Add item', item);
@@ -696,6 +792,119 @@ class Timeline extends EventTarget {
             if(!this.#json.data.configuration.endDate) {
                 const end = range.max ? range.max.getTime(): Date.now();
                 this.#json.data.configuration.endDate = end;
+            }
+        }
+    }
+
+    /**
+     * Callback called when a double click occured on the timeline.
+     *
+     * @param {Object} properties Properties object describing the event.
+     */
+    #onDoubleClicked(properties) {
+        if(this.#readOnly) {
+            return;
+        }
+
+        if(properties.what === "custom-time") {
+            const id = properties.customTime;
+
+            // Remove from json
+            if(!this.#json.removeMarker(id)) {
+                return;
+            }
+
+            // Remove from timeline
+            this.#timeline.removeCustomTime(id);
+        }
+        else if(properties.what === 'axis') {
+            const id = uuidv4();
+            const name = 'New event';
+            const date = properties.time;
+
+            // Add it in json
+            if(!this.#json.addMarker(id, name, date)) {
+                return;
+            }
+
+            // Add it in timeline
+            this.#timeline.addCustomTime(properties.time, id);
+            this.#timeline.setCustomTimeMarker(name, id, !this.isLocked());
+        }
+    }
+
+    /**
+     * Callback called when a marker text has changed.
+     *
+     * @param {Object} properties Properties object describing the event.
+     */
+    #onMarkerTitleChange(properties) {
+        if(this.#readOnly) {
+            return;
+        }
+
+        // Update in json
+        this.#json.updateMarker(properties.id, properties.title, null);
+    }
+
+    /**
+     * Callback called when a marker date has changed.
+     *
+     * @param {Object} properties Properties object describing the event.
+     */
+    #onMarkerDateChange(properties) {
+        if(this.#readOnly) {
+            return;
+        }
+
+        // Update in json
+        this.#json.updateMarker(properties.id, null, properties.time);
+    }
+
+    /**
+     * Add markers from json to the timeline.
+     */
+    #addMarkers() {
+        for(const [id, data] of Object.entries(this.#json.data.markers)) {
+            this.#timeline.addCustomTime(new Date(data.date), id);
+            this.#timeline.setCustomTimeMarker(data.name, id, !this.isLocked());
+        }
+    }
+
+    /**
+     * Update lock status of markers.
+     */
+    #updateMarkersLockStatus() {
+        for(const [id, data] of Object.entries(this.#json.data.markers)) {
+            // Block text editing
+            this.#timeline.setCustomTimeMarker(data.name, id, !this.isLocked());
+
+            // Block move of marker
+            var elements = document.getElementsByClassName(id);
+            if(elements.length > 1) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Same ID for multiple markers',
+                    text: 'Did you edit the json manually?',
+                });
+
+                return;
+            }
+
+            if(elements.length == 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No HTML element found for the marker',
+                });
+
+                return;
+            }
+
+            if(this.isLocked()) {
+                elements[0].classList.add(HTML.CLASS.LOCKED);
+            }
+            else {
+                elements[0].classList.remove(HTML.CLASS.LOCKED);
             }
         }
     }
@@ -2072,6 +2281,7 @@ const HTML = {
         SORTABLE: 'sortable',
         SORTABLE_GROUP: 'sortable-group',
         HIDDEN: 'hidden',
+        LOCKED: 'locked',
     }
 };
 
@@ -2098,6 +2308,12 @@ const VIS = {
             bg: '#d5ddf6',
             border: '#97b0f8',
         }
+    },
+
+    EVENT: {
+        DOUBLE_CLICK: 'doubleClick',
+        MARKER_CHANGED: 'markerchange',
+        TIME_CHANGED: 'timechange',
     },
 };
 

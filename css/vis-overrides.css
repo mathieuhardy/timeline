@@ -73,3 +73,23 @@
  * Items
  * -----------------------------------------------------------------------------
  */
+
+/**
+ * -----------------------------------------------------------------------------
+ * Custom times
+ * -----------------------------------------------------------------------------
+ */
+
+.vis-custom-time {
+    background-color: #f5a9a9 !important;
+}
+
+.vis-custom-time-marker {
+    color: #272727 !important;
+
+    font-weight: bold;
+}
+
+.vis-custom-time.locked {
+    pointer-events: none;
+}
