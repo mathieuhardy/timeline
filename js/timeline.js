@@ -1745,6 +1745,11 @@ class Application {
     #panelItemCategories = null;
     #panelConfiguration = null;
     #buttonLock = null;
+    #buttonLoadData = null;
+    #buttonSaveData = null;
+    #buttonEditConfiguration = null;
+    #buttonEditItemCategories = null;
+    #buttonEditGroups= null;
 
     // -------------------------------------------------------------------------
     // Constructor/destructor
@@ -1761,42 +1766,43 @@ class Application {
         this.#panelItemCategories = new PanelItemCategories(this.#json);
         this.#panelConfiguration = new PanelConfiguration(this.#json);
         this.#buttonLock = $e(HTML.ID.VIEW.ACTIONS.BUTTON.LOCK_UNLOCK);
+        this.#buttonLoadData = $e(HTML.ID.VIEW.ACTIONS.BUTTON.LOAD_DATA);
+        this.#buttonSaveData = $e(HTML.ID.VIEW.ACTIONS.BUTTON.SAVE_DATA);
+        this.#buttonEditConfiguration =
+            $e(HTML.ID.VIEW.ACTIONS.BUTTON.EDIT_CONFIGURATION);
+        this.#buttonEditItemCategories =
+            $e(HTML.ID.VIEW.ACTIONS.BUTTON.EDIT_ITEM_CATEGORIES);
+        this.#buttonEditGroups = $e(HTML.ID.VIEW.ACTIONS.BUTTON.EDIT_GROUPS);
 
         // Configure
         this.#updateLockIcon();
 
         // Bind events
-        Html.bind(HTML.ID.VIEW.ACTIONS.BUTTON.LOCK_UNLOCK, EVENT.CLICK, () => {
+        Html.bind(this.#buttonLock, EVENT.CLICK, () => {
             this.#timeline.toggleLockStatus();
             this.#updateLockIcon();
         });
 
-        Html.bind(HTML.ID.VIEW.ACTIONS.BUTTON.LOAD_DATA, EVENT.CLICK, () => {
+        Html.bind(this.#buttonLoadData, EVENT.CLICK, () => {
             this.#json.load();
             this.#timeline.refresh();
         });
 
-        Html.bind(HTML.ID.VIEW.ACTIONS.BUTTON.SAVE_DATA, EVENT.CLICK, () => {
+        Html.bind(this.#buttonSaveData, EVENT.CLICK, () => {
             this.#json.save(FILE.DATA);
         });
 
-        Html.bind(HTML.ID.VIEW.ACTIONS.BUTTON.EDIT_GROUPS, EVENT.CLICK, () => {
+        Html.bind(this.#buttonEditGroups, EVENT.CLICK, () => {
             this.#panelGroups.show();
         });
 
-        Html.bind(
-            HTML.ID.VIEW.ACTIONS.BUTTON.EDIT_ITEM_CATEGORIES,
-            EVENT.CLICK,
-            () => {
-                this.#panelItemCategories.show();
-            });
+        Html.bind(this.#buttonEditItemCategories, EVENT.CLICK, () => {
+            this.#panelItemCategories.show();
+        });
 
-        Html.bind(
-            HTML.ID.VIEW.ACTIONS.BUTTON.EDIT_CONFIGURATION,
-            EVENT.CLICK,
-            () => {
-                this.#panelConfiguration.show();
-            });
+        Html.bind(this.#buttonEditConfiguration, EVENT.CLICK, () => {
+            this.#panelConfiguration.show();
+        });
 
         Html.bind(this.#panelGroups, EVENT.CLOSED, () => {
             this.#timeline.refresh();
