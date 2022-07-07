@@ -23,6 +23,10 @@ body {
     border: 0;
 }
 
+.button[disabled] {
+    cursor: default !important;
+}
+
 /* Popup add/update item */
 
 .swal2-html-container {

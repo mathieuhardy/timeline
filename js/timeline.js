@@ -1776,11 +1776,13 @@ class Application {
 
         // Configure
         this.#updateLockIcon();
+        this.#updateButtonsLockStatus();
 
         // Bind events
         Html.bind(this.#buttonLock, EVENT.CLICK, () => {
             this.#timeline.toggleLockStatus();
             this.#updateLockIcon();
+            this.#updateButtonsLockStatus();
         });
 
         Html.bind(this.#buttonLoadData, EVENT.CLICK, () => {
@@ -1827,6 +1829,26 @@ class Application {
         this.#buttonLock.classList.remove('fa-lock');
         this.#buttonLock.classList.remove('fa-lock-open');
         this.#buttonLock.classList.add(classToSet);
+    }
+
+    /**
+     * Update lock status of buttons according to current status.
+     */
+    #updateButtonsLockStatus() {
+        if(this.#timeline.isLocked()) {
+            Html.disable(this.#buttonLoadData);
+            Html.disable(this.#buttonSaveData);
+            Html.disable(this.#buttonEditConfiguration);
+            Html.disable(this.#buttonEditItemCategories);
+            Html.disable(this.#buttonEditGroups);
+        }
+        else {
+            Html.enable(this.#buttonLoadData);
+            Html.enable(this.#buttonSaveData);
+            Html.enable(this.#buttonEditConfiguration);
+            Html.enable(this.#buttonEditItemCategories);
+            Html.enable(this.#buttonEditGroups);
+        }
     }
 };
 
@@ -1980,37 +2002,45 @@ class Html {
     /**
      * Enables a HTML element.
      *
-     * @param {String} id Identifier of the HTML item.
+     * @param {Object}   source   Html object or the string of the HTML
+     *                            identifier.
      */
-    static enable(id) {
-        $e(id).removeAttribute(HTML.ATTR.DISABLED);
+    static enable(source) {
+        var element = typeof(source) === 'string' ? $e(source) : source;
+        element.removeAttribute(HTML.ATTR.DISABLED);
     }
 
     /**
      * Disables a HTML element.
      *
-     * @param {String} id Identifier of the HTML item.
+     * @param {Object}   source   Html object or the string of the HTML
+     *                            identifier.
      */
-    static disable(id) {
-        $e(id).setAttribute(HTML.ATTR.DISABLED, '');
+    static disable(source) {
+        var element = typeof(source) === 'string' ? $e(source) : source;
+        element.setAttribute(HTML.ATTR.DISABLED, '');
     }
 
     /**
      * Hides a HTML element.
      *
-     * @param {String} id Identifier of the HTML item.
+     * @param {Object}   source   Html object or the string of the HTML
+     *                            identifier.
      */
-    static hide(id) {
-        $e(id).classList.add(HTML.CLASS.HIDDEN);
+    static hide(source) {
+        var element = typeof(source) === 'string' ? $e(source) : source;
+        element.classList.add(HTML.CLASS.HIDDEN);
     }
 
     /**
      * Shows a HTML element.
      *
-     * @param {String} id Identifier of the HTML item.
+     * @param {Object}   source   Html object or the string of the HTML
+     *                            identifier.
      */
-    static show(id) {
-        $e(id).classList.remove(HTML.CLASS.HIDDEN);
+    static show(source) {
+        var element = typeof(source) === 'string' ? $e(source) : source;
+        element.classList.remove(HTML.CLASS.HIDDEN);
     }
 
     /**
