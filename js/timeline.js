@@ -56,6 +56,10 @@ class Json extends EventTarget {
             return false;
         }
 
+        if(!this.#data.eras) {
+            return false;
+        }
+
         if(!this.#data.markers) {
             return false;
         }
@@ -95,6 +99,10 @@ class Json extends EventTarget {
 
         if(!this.#data.markers) {
             this.#data.markers = {};
+        }
+
+        if(!this.#data.eras) {
+            this.#data.eras = [];
         }
 
         // Notify
@@ -450,6 +458,120 @@ class Json extends EventTarget {
         return true;
     }
 
+    /**
+     * Get an era in the list.
+     *
+     * @param {String}] uuid Unique id of the era to get
+     *
+     * @return {Object}      An object or null if the id is not found.
+     */
+    getEra(uuid) {
+        if(uuid in this.data.eras) {
+            return this.data.eras[uuid];
+        }
+
+        return null;
+    }
+
+    /**
+     * Add an era to the list.
+     *
+     * @param {String} uuid      Unique id of the era.
+     * @param {String} text      Text of the era
+     * @param {Date}   startDate Start date of the era.
+     * @param {Date}   endDate   End date of the era.
+     * @param {String} color     Color of the era.
+     *
+     * @return {Bool}            True if the era has been added, false
+     *                           otherwise.
+     */
+    addEra(uuid, text, startDate, endDate, color) {
+        if(uuid in this.data.eras) {
+            return false;
+        }
+
+        this.data.eras[uuid] = {
+            text: text,
+            start: startDate,
+            end: endDate,
+            color: color,
+            visible: true,
+        };
+
+        return true;
+    }
+
+    /**
+     * Remove an era from the list.
+     *
+     * @param {String} uuid Unique id of the era.
+     *
+     * @return {Bool}       True if the era has been removed, false otherwise.
+     */
+    removeEra(uuid) {
+        if(!(uuid in this.data.eras)) {
+            return false;
+        }
+
+        delete this.data.eras[uuid];
+
+        return true;
+    }
+
+    /**
+     * Update an era from the list.
+     *
+     * @param {String} uuid      Unique id of the era.
+     * @param {String} text      Text of the era
+     * @param {Date}   startDate Start date of the era.
+     * @param {Date}   endDate   End date of the era.
+     * @param {String} color     Color of the era.
+     *
+     * @return {Bool}            True if the era has been updated, false
+     *                           otherwise.
+     */
+    updateEra(uuid, text, startDate, endDate, color) {
+        if(!(uuid in this.data.eras)) {
+            return false;
+        }
+
+        if(text) {
+            this.data.eras[uuid].text = text;
+        }
+
+        if(startDate) {
+            this.data.eras[uuid].start = startDate;
+        }
+
+        if(endDate) {
+            this.data.eras[uuid].end = endDate;
+        }
+
+        if(color) {
+            this.data.eras[uuid].color = color;
+        }
+
+        return true;
+    }
+
+    /**
+     * Find an era by its ID and toggle its visibility.
+     *
+     * @param  {String} uuid Unique identifier of the era to be toggled.
+     *
+     * @return {Bool}        True if the era visibility has been toggled, false
+     *                       otherwise.
+     */
+    toggleEraVisibility(uuid) {
+        if(!(uuid in this.data.eras)) {
+            return false;
+        }
+
+        this.data.eras[uuid].visible = !this.data.eras[uuid].visible;
+
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // Getters/setters
     // -------------------------------------------------------------------------
@@ -587,6 +709,29 @@ class Timeline extends EventTarget {
 
             if(this.#json.data.items) {
                 this.#items.add(this.#json.data.items);
+            }
+
+            for(const [id, data] of Object.entries(this.#json.data.eras)) {
+                if(!data.visible) {
+                    continue;
+                }
+
+                const start = new Date(data.start);
+                const end = new Date(data.end);
+
+                if(end.getTime() <= start.getTime()) {
+                    console.error('Ignoring invalid era: ' + id)
+                    continue;
+                }
+
+                this.#items.add({
+                    id: id,
+                    className: id,
+                    content: data.text,
+                    start: data.start,
+                    end: data.end,
+                    type: VIS.ITEM.TYPE.BACKGROUND,
+                });
             }
         }
 
@@ -947,13 +1092,13 @@ class PanelConfiguration extends EventTarget {
         this.#iconClose = $e(HTML.ID.VIEW.CONFIGURATION_EDIT.BUTTON.CLOSE);
 
         // Bind events
-        this.#panel.addEventListener(EVENT.CLICK, event => {
+        Html.bind(this.#panel, EVENT.CLICK, event => {
             if(event.target.id === this.#panelId) {
                 this.hide();
             }
         });
 
-        this.#iconClose.addEventListener(EVENT.CLICK, event => {
+        Html.bind(this.#iconClose, EVENT.CLICK, event => {
             this.hide();
         });
 
@@ -1042,6 +1187,7 @@ class PanelConfiguration extends EventTarget {
 
 class PanelItemCategories extends EventTarget {
     #eventClosed = null;
+    #eventStyleSheetUpdated = null;
     #panelId = HTML.ID.VIEW.ITEM_CATEGORIES_EDIT.PANEL;
     #panel = null;
     #list = null;
@@ -1066,6 +1212,7 @@ class PanelItemCategories extends EventTarget {
 
         // Create events
         this.#eventClosed = new CustomEvent(EVENT.CLOSED);
+        this.#eventStyleSheetUpdated = new CustomEvent(EVENT.CSS_UPDATED);
 
         // Create GUI objects
         this.#panel = $e(this.#panelId);
@@ -1075,13 +1222,13 @@ class PanelItemCategories extends EventTarget {
         this.#sheet = new CSSStyleSheet();
 
         // Bind events
-        this.#panel.addEventListener(EVENT.CLICK, event => {
+        Html.bind(this.#panel, EVENT.CLICK, event => {
             if(event.target.id === this.#panelId) {
                 this.hide();
             }
         });
 
-        this.#iconClose.addEventListener(EVENT.CLICK, event => {
+        Html.bind(this.#iconClose, EVENT.CLICK, event => {
             this.hide();
         });
 
@@ -1160,7 +1307,7 @@ class PanelItemCategories extends EventTarget {
 
         this.#sheet.replaceSync(styles);
 
-        document.adoptedStyleSheets = [this.#sheet];
+        this.dispatchEvent(this.#eventStyleSheetUpdated);
     }
 
     /**
@@ -1218,19 +1365,25 @@ class PanelItemCategories extends EventTarget {
         return this.#json;
     }
 
+    /**
+     * Returns the custom stylesheet for the item categories.
+     *
+     * @return {Object} Custom stylesheet.
+     */
+    get stylesheet() {
+        return this.#sheet;
+    }
+
     // -------------------------------------------------------------------------
     // Private
     // -------------------------------------------------------------------------
 
     /**
-     * Converts a group to an HTML list.
+     * Converts a the items categories to an HTML list.
      *
-     * @param {Object}  group Group object to be converted. If null is provided,
-     *                        the groups from JSON data will be used.
-     *
-     * @return {Object}       HTML ordered list object.
+     * @return {Object} HTML ordered list object.
      */
-    #toHtml(group = null) {
+    #toHtml() {
         var table = document.createElement('table');
 
         if(!this.json || !this.json.isValid()) {
@@ -1359,17 +1512,17 @@ class PanelGroups extends EventTarget {
         this.rebuild();
 
         // Bind events
-        this.#iconPlus.addEventListener(EVENT.CLICK, event => {
+        Html.bind(this.#iconPlus, EVENT.CLICK, event => {
             this.onAddGroup();
         });
 
-        this.#panel.addEventListener(EVENT.CLICK, event => {
+        Html.bind(this.#panel, EVENT.CLICK, event => {
             if(event.target.id === this.#panelId) {
                 this.hide();
             }
         });
 
-        this.#iconClose.addEventListener(EVENT.CLICK, event => {
+        Html.bind(this.#iconClose, EVENT.CLICK, event => {
             this.hide();
         });
     }
@@ -1628,7 +1781,7 @@ class PanelGroups extends EventTarget {
             btnRename.classList.add('fa');
             btnRename.classList.add('fa-pen');
             btnRename.setAttribute(HTML.ATTR.UUID, uuid);
-            btnRename.addEventListener('click', event => {
+            Html.bind(btnRename, EVENT.CLICK, event => {
                 PanelGroups.onRenameGroup(this, event.srcElement);
             });
 
@@ -1641,7 +1794,7 @@ class PanelGroups extends EventTarget {
             btnVisibility.classList.add('fa');
             btnVisibility.classList.add(attrVisible);
             btnVisibility.setAttribute(HTML.ATTR.UUID, uuid);
-            btnVisibility.addEventListener('click', event => {
+            Html.bind(btnVisibility, EVENT.CLICK, event => {
                 PanelGroups.onToggleGroupVisibility(this, event.srcElement);
             });
 
@@ -1652,7 +1805,7 @@ class PanelGroups extends EventTarget {
             btnRemove.classList.add('fa');
             btnRemove.classList.add('fa-trash');
             btnRemove.setAttribute(HTML.ATTR.UUID, uuid);
-            btnRemove.addEventListener('click', event => {
+            Html.bind(btnRemove, EVENT.CLICK, event => {
                 PanelGroups.onRemoveGroup(this, event.srcElement);
             });
 
@@ -1664,6 +1817,350 @@ class PanelGroups extends EventTarget {
         }
 
         return ol;
+    }
+}
+
+// =============================================================================
+// Panel used to manage the list of eras
+// =============================================================================
+
+class PanelEras extends EventTarget {
+    #eventClosed = null;
+    #eventStyleSheetUpdated = null;
+    #panelId = HTML.ID.VIEW.ERAS_EDIT.PANEL;
+    #panel = null;
+    #list = null;
+    #listId = null;
+    #json = null;
+    #iconPlus = null;
+    #iconClose = null;
+    #sheet = null;
+
+    // -------------------------------------------------------------------------
+    // Constructor/destructor
+    // -------------------------------------------------------------------------
+
+    /**
+     * Constructor of the class.
+     *
+     * @param {Object} json JSON data to be set.
+     */
+    constructor(json) {
+        super();
+
+        // Create events
+        this.#eventClosed = new CustomEvent(EVENT.CLOSED);
+        this.#eventStyleSheetUpdated = new CustomEvent(EVENT.CSS_UPDATED);
+
+        // Create GUI objects
+        this.#json = json;
+        this.#panel = $e(this.#panelId);
+        this.#list = $e(HTML.ID.VIEW.ERAS_EDIT.CONTENT_LIST);
+        this.#listId = uuidv4();
+        this.#iconPlus = $e(HTML.ID.VIEW.ERAS_EDIT.ICON.ADD);
+        this.#iconClose = $e(HTML.ID.VIEW.ERAS_EDIT.BUTTON.CLOSE);
+        this.#sheet = new CSSStyleSheet();
+
+        // Populate
+        this.rebuild();
+
+        // Bind events
+        Html.bind(this.#iconPlus, EVENT.CLICK, event => {
+            this.onAddEra();
+        });
+
+        Html.bind(this.#panel, EVENT.CLICK, event => {
+            if(event.target.id === this.#panelId) {
+                this.hide();
+            }
+        });
+
+        Html.bind(this.#iconClose, EVENT.CLICK, event => {
+            this.hide();
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // Public
+    // -------------------------------------------------------------------------
+
+    /**
+     * Shows the panel.
+     */
+    show() {
+        Html.show(this.#panelId);
+    }
+
+    /**
+     * Hides the panel.
+     *
+     * Sends a notification when closed.
+     *
+     * @param {Object} json JSON data to be set (optional).
+     */
+    hide() {
+        this.resetStylesheet();
+
+        Html.hide(this.#panelId);
+        this.dispatchEvent(this.#eventClosed);
+    }
+
+    /**
+     * Rebuild the HTML content of the panel.
+     */
+    rebuild() {
+        this.resetStylesheet();
+
+        this.#list.innerHTML = '';
+        this.#list.appendChild(this.#toHtml());
+    }
+
+    /**
+     * Rebuild the stylesheet.
+     */
+    resetStylesheet() {
+        if(!this.json || !this.json.isValid()) {
+            return;
+        }
+
+        const eras = this.json.data.eras;
+        var styles = '';
+
+        for(const [id, data] of Object.entries(eras)) {
+            styles += '.vis-item.vis-background.' + id + ' {';
+            styles += 'background-color: ' + data.color + ';';
+            styles += 'opacity: 0.2;';
+            styles += '}\n';
+        }
+
+        this.#sheet.replaceSync(styles);
+
+        this.dispatchEvent(this.#eventStyleSheetUpdated);
+    }
+
+    /**
+     * Slot called to add an era.
+     */
+    async onAddEra() {
+        if(this.json.addEra(uuidv4(),
+                            'New era',
+                            new Date(),
+                            new Date(),
+                            '#cccccc')) {
+            this.rebuild();
+        }
+    }
+
+    /**
+     * Slot called to edit an era.
+     *
+     * @param {Object} panel  Era panel instance.
+     * @param {Object} button HTML button that triggered the action.
+     */
+    static async onEditEra(panel, button) {
+        const uuid = button.getAttribute(HTML.ATTR.UUID);
+
+        var obj = panel.json.getEra(uuid);
+        if(!obj) {
+            console.error('Era not found in json: ' + uuid);
+            return;
+        }
+
+        // Load popup data from template and define replacements
+        var template = Utils.read('templates/update-era.html');
+
+        var replacements = {
+            TEXT: obj.text,
+            START_DATE: Utils.dateToString(new Date(obj.start)),
+            END_DATE: Utils.dateToString(new Date(obj.end)),
+            COLOR: obj.color,
+        };
+
+        // Show popup
+        const data = {
+            titleText: obj.text,
+            html: Template.replace(template, replacements),
+
+            width: 800,
+
+            preConfirm: async () => {
+                return {
+                    text: $e(HTML.ID.VIEW.ERA_EDIT.TEXT).value,
+                    start: $e(HTML.ID.VIEW.ERA_EDIT.START).value,
+                    end: $e(HTML.ID.VIEW.ERA_EDIT.END).value,
+                    color: $e(HTML.ID.VIEW.ERA_EDIT.COLOR).value,
+                }
+            },
+
+            backdrop: true,
+            showCancelButton: true,
+            showConfirmButton: true,
+            allowOutsideClick: true,
+            allowEscapeKey: true,
+            allowEnterKey: true,
+            reverseButtons: true,
+        };
+
+        const { value: formValues } = await Swal.fire(data);
+        if(!formValues) {
+            return null;
+        }
+
+        // Update fields
+        if('text' in formValues) {
+            obj.text = formValues.text;
+        }
+
+        if('start' in formValues) {
+            obj.start = formValues.start;
+        }
+
+        if('end' in formValues) {
+            obj.end = formValues.end;
+        }
+
+        if('color' in formValues) {
+            obj.color = formValues.color;
+        }
+
+        if(panel.json.updateEra(uuid, obj.text, obj.start, obj.end)) {
+            panel.rebuild();
+        }
+    }
+
+    /**
+     * Slot called to remove an era.
+     *
+     * @param {Object} panel Era panel instance.
+     * @param {Object} button HTML button that triggered the action.
+     */
+    static async onRemoveEra(panel, button) {
+        const uuid = button.getAttribute(HTML.ATTR.UUID);
+        const li = $e(uuid);
+
+        const data = {
+            titleText: 'Remove era',
+            text: li.getAttribute(HTML.ATTR.ERA.TEXT),
+            backdrop: true,
+            showCancelButton: true,
+            showConfirmButton: true,
+            allowOutsideClick: true,
+            allowEscapeKey: true,
+            allowEnterKey: true,
+            reverseButtons: true,
+        };
+
+        const { value: status } = await Swal.fire(data);
+        if(!status) {
+            return;
+        }
+
+        if(panel.json.removeEra(uuid)) {
+            panel.rebuild();
+        }
+    }
+
+    /**
+     * Slot called to toggle the visibility of an era.
+     *
+     * @param {Object} panel  Era panel instance.
+     * @param {Object} button HTML button that triggered the action.
+     */
+    static onToggleEraVisibility(panel, button) {
+        const uuid = button.getAttribute(HTML.ATTR.UUID);
+
+        if(panel.json.toggleEraVisibility(uuid)) {
+            panel.rebuild();
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Getters/setters
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns the JSON object provided to build the panel.
+     *
+     * @return {Object} JSON instance.
+     */
+    get json() {
+        return this.#json;
+    }
+
+    /**
+     * Returns the custom stylesheet for the item categories.
+     *
+     * @return {Object} Custom stylesheet.
+     */
+    get stylesheet() {
+        return this.#sheet;
+    }
+
+    // -------------------------------------------------------------------------
+    // Private
+    // -------------------------------------------------------------------------
+
+    /**
+     * Converts the eras to an HTML list.
+     *
+     * @return {Object}       HTML ordered list object.
+     */
+    #toHtml() {
+        var ul = document.createElement('ul');
+
+        if(!this.json || !this.json.isValid()) {
+            return ul;
+        }
+
+        for(const [id, data] of Object.entries(this.#json.data.eras)) {
+            var span = document.createElement('span');
+            span.textContent = data.text;
+
+            var li = document.createElement('li');
+            li.id = id;
+
+            li.appendChild(span);
+
+            // Icon: edit
+            var btnEdit = li.appendChild(document.createElement('i'));
+            btnEdit.classList.add('button');
+            btnEdit.classList.add('btn-edit-era');
+            btnEdit.classList.add('fa');
+            btnEdit.classList.add('fa-pen');
+            btnEdit.setAttribute(HTML.ATTR.UUID, id);
+            Html.bind(btnEdit, EVENT.CLICK, event => {
+                PanelEras.onEditEra(this, event.srcElement);
+            });
+
+            // Icon: show/hide
+            var attrVisible = data.visible ? 'fa-eye' : 'fa-eye-slash';
+
+            var btnVisibility = li.appendChild(document.createElement('i'));
+            btnVisibility.classList.add('button');
+            btnVisibility.classList.add('btn-show-hide-era');
+            btnVisibility.classList.add('fa');
+            btnVisibility.classList.add(attrVisible);
+            btnVisibility.setAttribute(HTML.ATTR.UUID, id);
+            Html.bind(btnVisibility, EVENT.CLICK, event => {
+                PanelEras.onToggleEraVisibility(this, event.srcElement);
+            });
+
+            // Icon: remove
+            var btnRemove = li.appendChild(document.createElement('i'));
+            btnRemove.classList.add('button');
+            btnRemove.classList.add('btn-remove-era');
+            btnRemove.classList.add('fa');
+            btnRemove.classList.add('fa-trash');
+            btnRemove.setAttribute(HTML.ATTR.UUID, id);
+            Html.bind(btnRemove, EVENT.CLICK, event => {
+                PanelEras.onRemoveEra(this, event.srcElement);
+            });
+
+            // Add to parent
+            ul.appendChild(li);
+        }
+
+        return ul;
     }
 }
 
@@ -1743,12 +2240,14 @@ class Application {
     #timeline = null;
     #panelGroups = null;
     #panelItemCategories = null;
+    #panelEras = null;
     #panelConfiguration = null;
     #buttonLock = null;
     #buttonLoadData = null;
     #buttonSaveData = null;
     #buttonEditConfiguration = null;
     #buttonEditItemCategories = null;
+    #buttonEditEras = null;
     #buttonEditGroups= null;
 
     // -------------------------------------------------------------------------
@@ -1764,6 +2263,7 @@ class Application {
         this.#timeline = new Timeline(this.#json);
         this.#panelGroups = new PanelGroups(this.#json);
         this.#panelItemCategories = new PanelItemCategories(this.#json);
+        this.#panelEras = new PanelEras(this.#json);
         this.#panelConfiguration = new PanelConfiguration(this.#json);
         this.#buttonLock = $e(HTML.ID.VIEW.ACTIONS.BUTTON.LOCK_UNLOCK);
         this.#buttonLoadData = $e(HTML.ID.VIEW.ACTIONS.BUTTON.LOAD_DATA);
@@ -1772,6 +2272,7 @@ class Application {
             $e(HTML.ID.VIEW.ACTIONS.BUTTON.EDIT_CONFIGURATION);
         this.#buttonEditItemCategories =
             $e(HTML.ID.VIEW.ACTIONS.BUTTON.EDIT_ITEM_CATEGORIES);
+        this.#buttonEditEras = $e(HTML.ID.VIEW.ACTIONS.BUTTON.EDIT_ERAS);
         this.#buttonEditGroups = $e(HTML.ID.VIEW.ACTIONS.BUTTON.EDIT_GROUPS);
 
         // Configure
@@ -1802,6 +2303,10 @@ class Application {
             this.#panelItemCategories.show();
         });
 
+        Html.bind(this.#buttonEditEras, EVENT.CLICK, () => {
+            this.#panelEras.show();
+        });
+
         Html.bind(this.#buttonEditConfiguration, EVENT.CLICK, () => {
             this.#panelConfiguration.show();
         });
@@ -1813,11 +2318,37 @@ class Application {
         Html.bind(this.#panelConfiguration, EVENT.CLOSED, () => {
             this.#timeline.refresh();
         });
+
+        Html.bind(this.#panelEras, EVENT.CLOSED, () => {
+            this.#timeline.refresh();
+        });
+
+        Html.bind(this.#panelItemCategories, EVENT.CSS_UPDATED, () => {
+            this.#updateCustomStyleSheets();
+            this.#timeline.refresh();
+        });
+
+        Html.bind(this.#panelEras, EVENT.CSS_UPDATED, () => {
+            this.#updateCustomStyleSheets();
+            this.#timeline.refresh();
+        });
+
+        this.#updateCustomStyleSheets();
     }
 
     // -------------------------------------------------------------------------
     // Private
     // -------------------------------------------------------------------------
+
+    /**
+     * Update custom stylesheets.
+     */
+    #updateCustomStyleSheets() {
+        document.adoptedStyleSheets = [
+            this.#panelItemCategories.stylesheet,
+            this.#panelEras.stylesheet
+        ];
+    }
 
     /**
      * Update lock icon according to current status.
@@ -1840,6 +2371,7 @@ class Application {
             Html.disable(this.#buttonSaveData);
             Html.disable(this.#buttonEditConfiguration);
             Html.disable(this.#buttonEditItemCategories);
+            Html.disable(this.#buttonEditEras);
             Html.disable(this.#buttonEditGroups);
         }
         else {
@@ -1847,6 +2379,7 @@ class Application {
             Html.enable(this.#buttonSaveData);
             Html.enable(this.#buttonEditConfiguration);
             Html.enable(this.#buttonEditItemCategories);
+            Html.enable(this.#buttonEditEras);
             Html.enable(this.#buttonEditGroups);
         }
     }
@@ -2120,7 +2653,6 @@ async function showAddUpdateItemPopup(text, item) {
         BOX_SELECTED: getSelected(itemType, VIS.ITEM.TYPE.BOX),
         POINT_SELECTED: getSelected(itemType, VIS.ITEM.TYPE.POINT),
         RANGE_SELECTED: getSelected(itemType, VIS.ITEM.TYPE.RANGE),
-        //BACKGROUND_SELECTED: getSelected(itemType, VIS.ITEM.TYPE.BACKGROUND),
     };
 
     // Show popup
@@ -2255,6 +2787,7 @@ const HTML = {
                     SAVE_DATA: 'Action_SaveData',
                     EDIT_CONFIGURATION: 'Action_EditConfiguration',
                     EDIT_ITEM_CATEGORIES: 'Action_EditItemCategories',
+                    EDIT_ERAS: 'Action_EditEras',
                     EDIT_GROUPS: 'Action_EditGroups',
                 },
             },
@@ -2292,6 +2825,26 @@ const HTML = {
                 BUTTON: {
                     CLOSE: 'Panel_ItemCategoriesEdit_Button_Close',
                 },
+            },
+
+            ERAS_EDIT: {
+                PANEL: 'Panel_ErasEdit',
+                CONTENT_LIST: 'Panel_ErasEdit_Content_List',
+
+                ICON: {
+                    ADD: 'Panel_ErasEdit_Content_Icon_Add',
+                },
+
+                BUTTON: {
+                    CLOSE: 'Panel_ErasEdit_Button_Close',
+                },
+            },
+
+            ERA_EDIT: {
+                TEXT: 'UpdateEra_Text',
+                START: 'UpdateEra_StartDate',
+                END: 'UpdateEra_EndDate',
+                COLOR: 'UpdateEra_Color',
             },
 
             ITEM_EDIT: {
@@ -2340,6 +2893,7 @@ const EVENT = {
     CLOSED: 'closed',
     UPDATED: 'updated',
     CHANGE: 'change',
+    CSS_UPDATED: 'css-updated',
 };
 
 // List of available item types in the Vis timeline
@@ -2349,7 +2903,7 @@ const VIS = {
             BOX: 'box',
             POINT: 'point',
             RANGE: 'range',
-            //BACKGROUND: 'background',
+            BACKGROUND: 'background',
         },
 
         DEFAULT_STYLE: {

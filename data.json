@@ -654,5 +654,28 @@
       "name": "toto",
       "date": "2021-06-30T22:00:00.000Z"
     }
+  },
+  "eras": {
+    "ed1f2d48-2bee-4f42-a70f-39d5db011094": {
+      "text": "Period A",
+      "start": "2021-06-23T22:00:00.000Z",
+      "end": "2021-06-24T22:00:00.000Z",
+      "color": "#ccffcc",
+      "visible": true
+    },
+    "ed1f2d48-2bee-4f42-a70f-39d5db011095": {
+      "text": "Period B",
+      "start": "2021-07-01T22:00:00.000Z",
+      "end": "2021-07-02T22:00:00.000Z",
+      "color": "#ffcccc",
+      "visible": true
+    },
+    "ed1f2d48-2bee-4f42-a70f-39d5db011096": {
+      "text": "Period C",
+      "start": "2021-07-11T22:00:00.000Z",
+      "end": "2021-07-13T22:00:00.000Z",
+      "color": "#ccccff",
+      "visible": false
+    }
   }
 }

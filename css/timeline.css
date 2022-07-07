@@ -220,10 +220,6 @@ body {
 
 /* Content > Groups list */
 #Panel_GroupsEdit_Content_List {
-    list-style-type: none;
-    counter-reset: item;
-    list-style-position: inside;
-
     padding: 0 1em 1em 1em;
 
     color: #ffffff;
@@ -311,6 +307,61 @@ body {
 #Panel_ItemCategoriesEdit_Content_List > table > tr > td {
     padding: 0.2em;
     text-align: center;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+/* Panel edit eras
+ * -----------------------------------------------------------------------------
+ */
+
+/* Content > Eras list */
+#Panel_ErasEdit_Content_List {
+    padding: 0 1em 1em 1em;
+
+    color: #ffffff;
+    background-color: #272727;
+}
+
+#Panel_ErasEdit_Content_List ul {
+    list-style-type: none;
+}
+
+#Panel_ErasEdit_Content_List li {
+    padding-top: 1em;
+}
+
+#Panel_ErasEdit_Content_List li > span,
+#Panel_ErasEdit_Content_List li > i {
+    display: inline-block;
+
+    vertical-align: middle;
+
+    cursor: grab;
+}
+
+#Panel_ErasEdit_Content_List li > i {
+    padding-left: 0.5em;
+}
+
+/* Content > Eras list > Icons */
+#Panel_ErasEdit_Content_List li > .btn-edit-era {
+    color: #8cc6d7;
+}
+
+#Panel_ErasEdit_Content_List li > .btn-remove-era {
+    color: #b1221c;
+}
+
+#Panel_ErasEdit_Content_List li > .btn-show-hide-era {
+    color: #b7ca79;
+}
+
+#Panel_ErasEdit_Content_Icon_Add {
+    color: #ffffff;
+    background-color: #272727;
+
+    padding: 5px;
 }
 
 /**
