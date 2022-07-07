@@ -1762,16 +1762,13 @@ class Application {
         this.#panelConfiguration = new PanelConfiguration(this.#json);
         this.#buttonLock = $e(HTML.ID.VIEW.ACTIONS.BUTTON.LOCK_UNLOCK);
 
+        // Configure
+        this.#updateLockIcon();
+
         // Bind events
         Html.bind(HTML.ID.VIEW.ACTIONS.BUTTON.LOCK_UNLOCK, EVENT.CLICK, () => {
             this.#timeline.toggleLockStatus();
-
-            const classToSet =
-                this.#timeline.isLocked() ? 'fa-lock' : 'fa-lock-open';
-
-            this.#buttonLock.classList.remove('fa-lock');
-            this.#buttonLock.classList.remove('fa-lock-open');
-            this.#buttonLock.classList.add(classToSet);
+            this.#updateLockIcon();
         });
 
         Html.bind(HTML.ID.VIEW.ACTIONS.BUTTON.LOAD_DATA, EVENT.CLICK, () => {
@@ -1808,6 +1805,22 @@ class Application {
         Html.bind(this.#panelConfiguration, EVENT.CLOSED, () => {
             this.#timeline.refresh();
         });
+    }
+
+    // -------------------------------------------------------------------------
+    // Private
+    // -------------------------------------------------------------------------
+
+    /**
+     * Update lock icon according to current status.
+     */
+    #updateLockIcon() {
+        const classToSet =
+            this.#timeline.isLocked() ? 'fa-lock' : 'fa-lock-open';
+
+        this.#buttonLock.classList.remove('fa-lock');
+        this.#buttonLock.classList.remove('fa-lock-open');
+        this.#buttonLock.classList.add(classToSet);
     }
 };
 
