@@ -2655,6 +2655,8 @@ async function showAddUpdateItemPopup(text, item) {
         RANGE_SELECTED: getSelected(itemType, VIS.ITEM.TYPE.RANGE),
     };
 
+    var htmlEditor = null;
+
     // Show popup
     const data = {
         titleText: text,
@@ -2668,8 +2670,11 @@ async function showAddUpdateItemPopup(text, item) {
                 Swal.showValidationMessage('No spaces allowed in category');
             }
 
-            const description =
-                await htmlEditors[HTML.ID.VIEW.ITEM_EDIT.DESCRIPTION].toJson();
+            if(!htmlEditor) {
+                return {};
+            }
+
+            const description = await htmlEditor.toJson();
 
             return {
                 text: $e(HTML.ID.VIEW.ITEM_EDIT.TEXT).value,
@@ -2691,7 +2696,7 @@ async function showAddUpdateItemPopup(text, item) {
 
         willOpen: function(element) {
             // Enable HTML editors
-            htmlEditors[HTML.ID.VIEW.ITEM_EDIT.DESCRIPTION] =
+            htmlEditor =
                 new HtmlEditor(HTML.ID.VIEW.ITEM_EDIT.DESCRIPTION, description);
 
             // Disable end date if not needed
@@ -2923,8 +2928,5 @@ const VIS = {
 // =============================================================================
 // Create GUI objects
 // =============================================================================
-
-// TODO
-var htmlEditors = {};
 
 const app = new Application();
