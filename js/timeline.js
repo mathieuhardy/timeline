@@ -4,7 +4,7 @@
 
 class Json extends EventTarget {
     #eventUpdated = null;
-    #path = null;
+    #eventLoaded = null;
     #data = null;
 
     // -------------------------------------------------------------------------
@@ -13,17 +13,12 @@ class Json extends EventTarget {
 
     /**
      * Constructor of the class.
-     *
-     * @param {String} path The path of the JSON file to be loaded.
      */
-    constructor(path) {
+    constructor() {
         super();
 
         this.#eventUpdated = new CustomEvent(EVENT.UPDATED);
-
-        this.#path = path;
-
-        this.load();
+        this.#eventLoaded = new CustomEvent(EVENT.LOAD);
     }
 
     // -------------------------------------------------------------------------
@@ -68,45 +63,85 @@ class Json extends EventTarget {
     }
 
     /**
-     * Load or reload the data from the filesystem.
+     * Check if it contains some displayable data.
+     *
+     * @return `true` if there's some data to be displayed in timeline, `false`
+     *         otherwise.
      */
-    load() {
-        try {
-            this.#data = JSON.parse(Utils.read(this.#path, MIMETYPE.JSON));
-
-            this.#sortGroups();
-        }
-        catch(error) {
-            this.#data = {};
-        };
-
-        // Add missing fields
-        if(!this.#data.configuration) {
-            this.#data.configuration = {};
+    hasDisplayableData() {
+        if(!this.#data) {
+            return false;
         }
 
-        if(!this.#data.groups) {
-            this.#data.groups = [];
+        if(this.#data.groups.length > 0) {
+            return true;
         }
 
-        if(!this.#data.items) {
-            this.#data.items = [];
+        if(this.#data.items.length > 0) {
+            return true;
         }
 
-        if(!this.#data.item_categories) {
-            this.#data.item_categories = {};
+        if(this.#data.eras.length > 0) {
+            return true;
         }
 
-        if(!this.#data.markers) {
-            this.#data.markers = {};
+        if(this.#data.markers.length > 0) {
+            return true;
         }
 
-        if(!this.#data.eras) {
-            this.#data.eras = [];
-        }
+        return false;
+    }
 
-        // Notify
-        this.dispatchEvent(this.#eventUpdated);
+    /**
+     * Load or reload the data from the filesystem.
+     *
+     * @param {String} file The filepath of the JSON file to be loaded.
+     */
+    load(file) {
+        var reader = new FileReader();
+
+        reader.readAsText(file, 'UTF-8');
+
+        Html.bind(reader, EVENT.LOAD, event => {
+            const content = event.target.result;
+
+            try {
+                this.#data = JSON.parse(content);
+
+                this.#sortGroups();
+            }
+            catch(error) {
+                this.#data = {};
+            };
+
+            // Add missing fields
+            if(!this.#data.configuration) {
+                this.#data.configuration = {};
+            }
+
+            if(!this.#data.groups) {
+                this.#data.groups = [];
+            }
+
+            if(!this.#data.items) {
+                this.#data.items = [];
+            }
+
+            if(!this.#data.item_categories) {
+                this.#data.item_categories = {};
+            }
+
+            if(!this.#data.markers) {
+                this.#data.markers = {};
+            }
+
+            if(!this.#data.eras) {
+                this.#data.eras = [];
+            }
+
+            // Notify
+            this.dispatchEvent(this.#eventLoaded);
+        });
     }
 
     /**
@@ -645,29 +680,7 @@ class Timeline extends EventTarget {
         this.#options = this.#createOptions();
         this.#json = json;
 
-        this.#timeline = new vis.Timeline(
-            $e(HTML.ID.VIEW.TIMELINE.CONTAINER),
-            this.#items,
-            this.#groups,
-            this.#options);
-
-        this.#timeline.on(VIS.EVENT.DOUBLE_CLICK, (properties) => {
-            this.#onDoubleClicked(properties);
-        });
-
-        this.#timeline.on(VIS.EVENT.MARKER_CHANGED, (properties) => {
-            this.#onMarkerTitleChange(properties);
-        });
-
-        this.#timeline.on(VIS.EVENT.TIME_CHANGED, (properties) => {
-            this.#onMarkerDateChange(properties);
-        });
-
         this.refresh();
-
-        this.#addMarkers();
-
-        this.#updateRange();
     }
 
     // -------------------------------------------------------------------------
@@ -736,7 +749,12 @@ class Timeline extends EventTarget {
         }
 
         // Update display
-        if(this.#timeline) {
+        if(!this.#timeline) {
+            if(this.#json.hasDisplayableData()) {
+                this.#createTimeline();
+            }
+        }
+        else {
             this.#timeline.redraw();
         }
     }
@@ -764,6 +782,32 @@ class Timeline extends EventTarget {
     // -------------------------------------------------------------------------
     // Private
     // -------------------------------------------------------------------------
+
+    /**
+     * Create the timeline Vis object.
+     */
+    #createTimeline() {
+        this.#timeline = new vis.Timeline(
+            $e(HTML.ID.VIEW.TIMELINE.CONTAINER),
+            this.#items,
+            this.#groups,
+            this.#options);
+
+        this.#timeline.on(VIS.EVENT.DOUBLE_CLICK, (properties) => {
+            this.#onDoubleClicked(properties);
+        });
+
+        this.#timeline.on(VIS.EVENT.MARKER_CHANGED, (properties) => {
+            this.#onMarkerTitleChange(properties);
+        });
+
+        this.#timeline.on(VIS.EVENT.TIME_CHANGED, (properties) => {
+            this.#onMarkerDateChange(properties);
+        });
+
+        this.#addMarkers();
+        this.#updateRange();
+    }
 
     /**
      * Create the list of options for the Vis timeline graphical object.
@@ -1010,6 +1054,10 @@ class Timeline extends EventTarget {
      * Add markers from json to the timeline.
      */
     #addMarkers() {
+        if(!this.#json || !this.#json.isValid()) {
+            return;
+        }
+
         for(const [id, data] of Object.entries(this.#json.data.markers)) {
             this.#timeline.addCustomTime(new Date(data.date), id);
             this.#timeline.setCustomTimeMarker(data.name, id, !this.isLocked());
@@ -1020,6 +1068,10 @@ class Timeline extends EventTarget {
      * Update lock status of markers.
      */
     #updateMarkersLockStatus() {
+        if(!this.#json || !this.#json.isValid()) {
+            return;
+        }
+
         for(const [id, data] of Object.entries(this.#json.data.markers)) {
             // Block text editing
             this.#timeline.setCustomTimeMarker(data.name, id, !this.isLocked());
@@ -1102,12 +1154,8 @@ class PanelConfiguration extends EventTarget {
             this.hide();
         });
 
-        // Populate
-        this.reset();
-
-        // Binds
-        Html.bind(this.#json, EVENT.UPDATED, () => {
-            this.reset();
+        Html.bind(this.#json, EVENT.LOAD, () => {
+            this.refresh();
         });
 
         Html.bind(this.#startDate, EVENT.CHANGE, () => {
@@ -1157,9 +1205,13 @@ class PanelConfiguration extends EventTarget {
     }
 
     /**
-     * Reset the HTML content of the panel.
+     * Refresh the HTML content of the panel.
      */
-    reset() {
+    refresh() {
+        if(!this.json || !this.json.isValid()) {
+            return;
+        }
+
         const start = new Date(this.json.data.configuration.startDate);
         const end = new Date(this.json.data.configuration.endDate);
 
@@ -1232,12 +1284,12 @@ class PanelItemCategories extends EventTarget {
             this.hide();
         });
 
-        // Populate
-        this.rebuild();
+        Html.bind(this.#json, EVENT.LOAD, () => {
+            this.refresh();
+        });
 
-        // Binds
         Html.bind(this.#json, EVENT.UPDATED, () => {
-            this.rebuild();
+            this.refresh();
         });
     }
 
@@ -1277,9 +1329,9 @@ class PanelItemCategories extends EventTarget {
     }
 
     /**
-     * Rebuild the HTML content of the panel.
+     * Refresh the HTML content of the panel.
      */
-    rebuild() {
+    refresh() {
         this.resetStylesheet();
 
         this.#list.innerHTML = '';
@@ -1287,7 +1339,7 @@ class PanelItemCategories extends EventTarget {
     }
 
     /**
-     * Rebuild the stylesheet.
+     * Reset the custom stylesheet.
      */
     resetStylesheet() {
         if(!this.json || !this.json.isValid()) {
@@ -1508,10 +1560,11 @@ class PanelGroups extends EventTarget {
         this.#iconPlus = $e(HTML.ID.VIEW.GROUP_EDIT.ICON.ADD);
         this.#iconClose = $e(HTML.ID.VIEW.GROUP_EDIT.BUTTON.CLOSE);
 
-        // Populate
-        this.rebuild();
-
         // Bind events
+        Html.bind(this.#json, EVENT.LOAD, event => {
+            this.refresh();
+        });
+
         Html.bind(this.#iconPlus, EVENT.CLICK, event => {
             this.onAddGroup();
         });
@@ -1551,9 +1604,9 @@ class PanelGroups extends EventTarget {
     }
 
     /**
-     * Rebuild the HTML content of the panel.
+     * Refresh the HTML content of the panel.
      */
-    rebuild() {
+    refresh() {
         this.#list.innerHTML = '';
         this.#list.appendChild(this.#toHtml());
     }
@@ -1614,7 +1667,7 @@ class PanelGroups extends EventTarget {
         }
 
         if(this.json.addGroup(name)) {
-            this.rebuild();
+            this.refresh();
         }
     }
 
@@ -1650,7 +1703,7 @@ class PanelGroups extends EventTarget {
         }
 
         if(panel.json.renameGroup(groupId, name)) {
-            panel.rebuild();
+            panel.refresh();
         }
     }
 
@@ -1683,7 +1736,7 @@ class PanelGroups extends EventTarget {
         }
 
         if(panel.json.removeGroup(groupId)) {
-            panel.rebuild();
+            panel.refresh();
         }
     }
 
@@ -1699,7 +1752,7 @@ class PanelGroups extends EventTarget {
         const groupId = li.getAttribute(HTML.ATTR.GROUP.ID);
 
         if(panel.json.toggleGroupVisibility(groupId)) {
-            panel.rebuild();
+            panel.refresh();
         }
     }
 
@@ -1861,10 +1914,11 @@ class PanelEras extends EventTarget {
         this.#iconClose = $e(HTML.ID.VIEW.ERAS_EDIT.BUTTON.CLOSE);
         this.#sheet = new CSSStyleSheet();
 
-        // Populate
-        this.rebuild();
-
         // Bind events
+        Html.bind(this.#json, EVENT.LOAD, event => {
+            this.refresh();
+        });
+
         Html.bind(this.#iconPlus, EVENT.CLICK, event => {
             this.onAddEra();
         });
@@ -1906,9 +1960,9 @@ class PanelEras extends EventTarget {
     }
 
     /**
-     * Rebuild the HTML content of the panel.
+     * Refresh the HTML content of the panel.
      */
-    rebuild() {
+    refresh() {
         this.resetStylesheet();
 
         this.#list.innerHTML = '';
@@ -1916,7 +1970,7 @@ class PanelEras extends EventTarget {
     }
 
     /**
-     * Rebuild the stylesheet.
+     * Reset the stylesheet.
      */
     resetStylesheet() {
         if(!this.json || !this.json.isValid()) {
@@ -1947,7 +2001,7 @@ class PanelEras extends EventTarget {
                             new Date(),
                             new Date(),
                             '#cccccc')) {
-            this.rebuild();
+            this.refresh();
         }
     }
 
@@ -2024,7 +2078,7 @@ class PanelEras extends EventTarget {
         }
 
         if(panel.json.updateEra(uuid, obj.text, obj.start, obj.end)) {
-            panel.rebuild();
+            panel.refresh();
         }
     }
 
@@ -2056,7 +2110,7 @@ class PanelEras extends EventTarget {
         }
 
         if(panel.json.removeEra(uuid)) {
-            panel.rebuild();
+            panel.refresh();
         }
     }
 
@@ -2070,7 +2124,7 @@ class PanelEras extends EventTarget {
         const uuid = button.getAttribute(HTML.ATTR.UUID);
 
         if(panel.json.toggleEraVisibility(uuid)) {
-            panel.rebuild();
+            panel.refresh();
         }
     }
 
@@ -2259,7 +2313,7 @@ class Application {
      */
     constructor() {
         // Create objects
-        this.#json = new Json(FILE.DATA);
+        this.#json = new Json();
         this.#timeline = new Timeline(this.#json);
         this.#panelGroups = new PanelGroups(this.#json);
         this.#panelItemCategories = new PanelItemCategories(this.#json);
@@ -2287,8 +2341,20 @@ class Application {
         });
 
         Html.bind(this.#buttonLoadData, EVENT.CLICK, () => {
-            this.#json.load();
-            this.#timeline.refresh();
+            var input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+
+            Html.bind(input, EVENT.CHANGE, event => {
+                this.#json.load(event.target.files[0]);
+                this.#timeline.refresh();
+                //this.#timeline.fit();
+
+                input.remove();
+
+            });
+
+            input.click();
         });
 
         Html.bind(this.#buttonSaveData, EVENT.CLICK, () => {
@@ -2899,6 +2965,7 @@ const EVENT = {
     UPDATED: 'updated',
     CHANGE: 'change',
     CSS_UPDATED: 'css-updated',
+    LOAD: 'load',
 };
 
 // List of available item types in the Vis timeline

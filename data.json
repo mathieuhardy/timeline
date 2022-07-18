@@ -12,7 +12,7 @@
       "childs": [
         {
           "id": "142ed279-a566-4bd0-a599-511a2bd121ee",
-          "name": "Johan",
+          "name": "Jojo",
           "category": "group-character",
           "position": 1,
           "visible": true,
@@ -20,7 +20,7 @@
         },
         {
           "id": "fe3a4d0c-d18e-42c1-9183-4888f7e6aa2f",
-          "name": "Khouloud",
+          "name": "K",
           "category": "group-character",
           "position": 2,
           "visible": true,
@@ -37,7 +37,7 @@
       "childs": [
         {
           "id": "e7268082-daa0-4e9f-b8de-2f63cf8f8fd8",
-          "name": "Isabelle",
+          "name": "Isa",
           "category": "group-character",
           "position": 1,
           "visible": true,
@@ -53,7 +53,7 @@
         },
         {
           "id": "d4b1a7d3-5edd-429c-a6e2-84429f72fafc",
-          "name": "Noam",
+          "name": "Nono",
           "category": "group-character",
           "position": 3,
           "visible": true,
@@ -61,7 +61,7 @@
         },
         {
           "id": "140b4da3-b544-46af-9412-f3fdf334f836",
-          "name": "Bertrand",
+          "name": "Bertram",
           "category": "group-character",
           "position": 4,
           "visible": true,
@@ -86,7 +86,7 @@
       "childs": [
         {
           "id": "9fa64fe7-a983-4ee7-870d-c712e922d79f",
-          "name": "Alexis",
+          "name": "Alex",
           "category": "group-character",
           "position": 1,
           "visible": true,
